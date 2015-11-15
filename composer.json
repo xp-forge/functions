@@ -6,7 +6,7 @@
   "description" : "Functional interfaces",
   "keywords": ["module", "xp"],
   "require" : {
-    "xp-framework/core": "dev-master",
+    "xp-framework/core": "dev-master as 6.6.0-dev",
     "php" : ">=5.5.0"
   },
   "require-dev" : {
