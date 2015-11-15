@@ -73,7 +73,7 @@ class Camera {
 }
 
 $input= new Color(125, 125, 125);
-(new Camera())->snap($input);                            // 125 125, 125
+(new Camera())->snap($input);                            // 125, 125, 125
 (new Camera([Color::class, 'brighter']))->snap($input);  // 178, 178, 178
 ```
 
