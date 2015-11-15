@@ -94,6 +94,34 @@ $write->butFirst($dump)->accept(true);     // (same as above)
 
 The `void()` method returns a consumer which does nothing.
 
+```php
+use lang\functions\Consumer;
+
+class Resource {
+  private $conn;
+
+  public function __construct() { $this->conn= ...; }
+
+  public function operation() { ... }
+
+  public function close() { $this->conn->close(); }
+
+  public static function use(Consumer $consumer) {
+    $self= new self();
+    try {
+      $consumer->accept($self);
+    } finally {
+      $self->close();
+    }
+  }
+}
+
+Resource::use(Consumer::of(function($resource) {
+  $this->cat->info('Performing operation...')
+  $resource->operation();
+}));
+```
+
 Further reading
 ---------------
 * The [java.util.function package](http://docs.oracle.com/javase/8/docs/api/java/util/function/package-summary.html)
