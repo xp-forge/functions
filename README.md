@@ -78,7 +78,7 @@ $isNull->or($gtZero)->test(null);          // = null === null || null > 0 = true
 ```
 
 ### Consumer
-Instances of the `lang.functions.Consuner` class represent a function which takes in an argument and does not return anything.
+Instances of the `lang.functions.Consumer` class represent a function which takes in an argument and does not return anything.
 
 ```php
 use lang\functions\Consumer;
@@ -89,10 +89,18 @@ $write= Consumer::of(function($val) use($file) { $file->write($val); });
 
 $dump->accept(true);                       // Prints "bool(true)"
 $dump->andThen($write)->accept(true);      // Prints, then writes to file
-$write->butFirst($dump)->accept(true);     // (same as above)
+
+if ($simulation) {
+  $consumer= Consumer::void();             // Do nothing in simulation
+} else if ($debug) {
+  $consumer= $write->butFirst($dump);      // In debug mode, log first
+} else {
+  $consumer= $write;                       // Otherwise, write directly
+}
+$consumer->accept(true);
 ```
 
-The `void()` method returns a consumer which does nothing.
+Consumers can be conveniently used to create APIs like the one below: You cannot forget to close the resource as you might:
 
 ```php
 use lang\functions\Consumer;
