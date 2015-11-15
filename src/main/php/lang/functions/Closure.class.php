@@ -16,6 +16,7 @@ class Closure {
     self::$IDENTITY= new self(function($arg) { return $arg; });
   }
 
+  /** @param php.Closure $backing */
   public function __construct(\Closure $backing) {
     $this->closure= $backing;
   }

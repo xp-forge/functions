@@ -14,6 +14,7 @@ class Predicate {
 
   private $predicate;
 
+  /** @param php.Closure $backing */
   public function __construct(\Closure $backing) {
     $this->predicate= $backing;
   }

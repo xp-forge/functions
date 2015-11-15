@@ -43,6 +43,21 @@ $gtZero->and($ltFifty)->test(5);           // = 5 > 0 && 5 < 50 = true
 $isNull->or($gtZero)->test(null);          // = null === null || null > 0 = true
 ```
 
+### Consumer
+Instances of the `lang.functions.Consuner` class represent a function which takes in an argument and does not return anything.
+
+```php
+use lang\functions\Consumer;
+
+$file= ...;
+$dump= Consumer::of(function($val) { var_dump($val); });
+$write= Consumer::of(function($val) use($file) { $file->write($val); });
+
+$dump->accept(true);                       // Prints "bool(true)"
+$dump->andThen($write)->accept(true);      // Prints, then writes to file
+$write->compose($dump)->accept(true);      // (same as above)
+```
+
 ### Identity
 The `lang.functions.Closure` class' `identity()` method returns a closure instance which will return its arguments' value. The following example shows how it is used as the initial value for a reduction on a sequence of filters: If filters is empty, the reduction will return the identity function, otherwise it will combine all given closures using `andThen()`.
 
