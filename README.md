@@ -102,9 +102,9 @@ class Resource {
 
   private function __construct() { $this->conn= ...; }
 
-  public function operation() { ... }
+  private function close() { $this->conn->close(); }
 
-  public function close() { $this->conn->close(); }
+  public function operation() { ... }
 
   public static function use(Consumer $consumer) {
     $self= new self();
