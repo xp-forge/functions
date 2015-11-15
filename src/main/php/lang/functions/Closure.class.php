@@ -95,4 +95,17 @@ class Closure {
       });
     }
   }
+
+  /**
+   * Wraps this closure with another closure (think: AroundInvoke)
+   *
+   * @param  var $closure
+   * @return self
+   */
+  public function wrapIn($closure) {
+    $func= Functions::$WRAP->cast($closure);
+    return new self(function($arg) use($func) {
+      return $func->__invoke($this->closure, $arg);
+    });
+  }
 }
