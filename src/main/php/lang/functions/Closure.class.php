@@ -9,12 +9,11 @@ use lang\FunctionType;
  * @test  xp://lang.functions.unittest.ClosureTest
  */
 class Closure {
-  private static $IDENTITY, $TYPE;
+  private static $IDENTITY;
   private $closure;
 
   static function __static() {
     self::$IDENTITY= new self(function($arg) { return $arg; });
-    self::$TYPE= FunctionType::forName('function(var): var');
   }
 
   public function __construct(\Closure $backing) {
@@ -28,7 +27,7 @@ class Closure {
    * @return self
    */
   public static function of($closure) {
-    return new self(self::$TYPE->cast($closure));
+    return new self(Functions::$APPLY->cast($closure));
   }
 
   /**
@@ -68,7 +67,7 @@ class Closure {
    * @return self
    */
   public function compose($closure) {
-    $func= self::$TYPE->cast($closure);
+    $func= Functions::$APPLY->cast($closure);
     if ($this === self::$IDENTITY) {
       return new self($func);
     } else {
@@ -86,7 +85,7 @@ class Closure {
    * @return self
    */
   public function andThen($closure) {
-    $func= self::$TYPE->cast($closure);
+    $func= Functions::$APPLY->cast($closure);
     if ($this === self::$IDENTITY) {
       return new self($func);
     } else {

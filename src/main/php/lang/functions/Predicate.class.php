@@ -12,12 +12,7 @@ use lang\Error;
 class Predicate {
   use LogicalOps;
 
-  private static $TYPE;
   private $predicate;
-
-  static function __static() {
-    self::$TYPE= FunctionType::forName('function(var): bool');
-  }
 
   public function __construct(\Closure $backing) {
     $this->predicate= $backing;
@@ -30,7 +25,7 @@ class Predicate {
    * @return self
    */
   public static function of($predicate) {
-    return new self(self::$TYPE->cast($predicate));
+    return new self(Functions::$PREDICATE->cast($predicate));
   }
 
   /**
