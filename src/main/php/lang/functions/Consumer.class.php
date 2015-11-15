@@ -9,7 +9,12 @@ use lang\FunctionType;
  * @test  xp://lang.functions.unittest.ConsumerTest
  */
 class Consumer {
+  private static $VOID;
   private $closure;
+
+  static function __static() {
+    self::$VOID= new self(function($arg) { });
+  }
 
   /** @param php.Closure $backing */
   public function __construct(\Closure $backing) {
@@ -24,6 +29,15 @@ class Consumer {
    */
   public static function of($closure) {
     return new self(Functions::$CONSUME->cast($closure));
+  }
+
+  /**
+   * Returns a void consumer which does nothing
+   *
+   * @return self
+   */
+  public static function void() {
+    return self::$VOID;
   }
 
   /**
@@ -54,11 +68,15 @@ class Consumer {
    * @return self
    */
   public function andThen($closure) {
-    $func= Functions::$APPLY->cast($closure);
-    return new self(function($arg) use($func) {
-      $this->closure->__invoke($arg);
-      $func->__invoke($arg);
-    });
+    $func= Functions::$CONSUME->cast($closure);
+    if ($this === self::$VOID) {
+      return new self($closure);
+    } else {
+      return new self(function($arg) use($func) {
+        $this->closure->__invoke($arg);
+        $func->__invoke($arg);
+      });
+    }
   }
 
   /**
@@ -69,10 +87,14 @@ class Consumer {
    * @return self
    */
   public function compose($closure) {
-    $func= Functions::$APPLY->cast($closure);
-    return new self(function($arg) use($func) {
-      $func->__invoke($arg);
-      $this->closure->__invoke($arg);
-    });
+    $func= Functions::$CONSUME->cast($closure);
+    if ($this === self::$VOID) {
+      return new self($closure);
+    } else {
+      return new self(function($arg) use($func) {
+        $func->__invoke($arg);
+        $this->closure->__invoke($arg);
+      });
+    }
   }
 }

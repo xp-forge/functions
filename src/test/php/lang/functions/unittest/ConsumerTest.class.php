@@ -6,6 +6,17 @@ use lang\IllegalStateException;
 
 class ConsumerTest extends \unittest\TestCase {
 
+  #[@test]
+  public function void() {
+    Consumer::void()->accept(5);
+  }
+
+  #[@test]
+  public function is_callable() {
+    $f= Consumer::void();
+    $f(5);
+  }
+
   #[@test, @values([
   #  [function($arg) { return true; }],
   #  ['extension_loaded']
@@ -50,5 +61,21 @@ class ConsumerTest extends \unittest\TestCase {
 
     Consumer::of($add)->andThen($remove)->accept(1);
     $this->assertEquals([], $values);
+  }
+
+  #[@test]
+  public function compose_optimized_for_identity() {
+    $fixture= function($val) { return 'test'; };
+
+    $closure= Consumer::void()->compose($fixture);
+    $this->assertEquals($fixture, typeof($closure)->getField('closure')->setAccessible(true)->get($closure));
+  }
+
+  #[@test]
+  public function and_then_optimized_for_identity() {
+    $fixture= function($val) { return 'test'; };
+
+    $closure= Consumer::void()->andThen($fixture);
+    $this->assertEquals($fixture, typeof($closure)->getField('closure')->setAccessible(true)->get($closure));
   }
 }
