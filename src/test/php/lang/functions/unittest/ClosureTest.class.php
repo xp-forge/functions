@@ -49,15 +49,15 @@ class ClosureTest extends \unittest\TestCase {
   }
 
   #[@test]
-  public function compose() {
+  public function butFirst() {
     $increment= function($val) { return $val + 1; };
     $doubleIt= function($val) { return $val * 2; };
 
-    $this->assertEquals(11, Closure::of($increment)->compose($doubleIt)->apply(5));
+    $this->assertEquals(11, Closure::of($increment)->butFirst($doubleIt)->apply(5));
   }
 
   #[@test]
-  public function and_then() {
+  public function andThen() {
     $increment= function($val) { return $val + 1; };
     $doubleIt= function($val) { return $val * 2; };
 
@@ -73,15 +73,15 @@ class ClosureTest extends \unittest\TestCase {
   }
 
   #[@test]
-  public function compose_optimized_for_identity() {
+  public function butFirst_optimized_for_identity() {
     $fixture= function($val) { return 'test'; };
 
-    $closure= Closure::identity()->compose($fixture);
+    $closure= Closure::identity()->butFirst($fixture);
     $this->assertEquals($fixture, typeof($closure)->getField('closure')->setAccessible(true)->get($closure));
   }
 
   #[@test]
-  public function and_then_optimized_for_identity() {
+  public function andThen_optimized_for_identity() {
     $fixture= function($val) { return 'test'; };
 
     $closure= Closure::identity()->andThen($fixture);

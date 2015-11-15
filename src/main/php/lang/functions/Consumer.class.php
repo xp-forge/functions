@@ -61,6 +61,25 @@ class Consumer {
   }
 
   /**
+   * Compose this closure with another closure which gets applied **before**
+   * this closure gets applied.
+   *
+   * @param  var $closure A closure reference
+   * @return self
+   */
+  public function butFirst($closure) {
+    $func= Functions::$CONSUME->cast($closure);
+    if ($this === self::$VOID) {
+      return new self($closure);
+    } else {
+      return new self(function($arg) use($func) {
+        $func->__invoke($arg);
+        $this->closure->__invoke($arg);
+      });
+    }
+  }
+
+  /**
    * Compose this closure with another closure which gets applied **after**
    * this closure gets applied.
    *
@@ -75,25 +94,6 @@ class Consumer {
       return new self(function($arg) use($func) {
         $this->closure->__invoke($arg);
         $func->__invoke($arg);
-      });
-    }
-  }
-
-  /**
-   * Compose this closure with another closure which gets applied **before**
-   * this closure gets applied.
-   *
-   * @param  var $closure A closure reference
-   * @return self
-   */
-  public function compose($closure) {
-    $func= Functions::$CONSUME->cast($closure);
-    if ($this === self::$VOID) {
-      return new self($closure);
-    } else {
-      return new self(function($arg) use($func) {
-        $func->__invoke($arg);
-        $this->closure->__invoke($arg);
       });
     }
   }

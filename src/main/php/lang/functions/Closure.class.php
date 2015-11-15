@@ -67,7 +67,7 @@ class Closure {
    * @param  var $closure A closure reference
    * @return self
    */
-  public function compose($closure) {
+  public function butFirst($closure) {
     $func= Functions::$APPLY->cast($closure);
     if ($this === self::$IDENTITY) {
       return new self($func);

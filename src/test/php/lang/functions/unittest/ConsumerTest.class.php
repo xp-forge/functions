@@ -44,17 +44,17 @@ class ConsumerTest extends \unittest\TestCase {
   }
 
   #[@test]
-  public function compose() {
+  public function butFirst() {
     $operations= [];
     $write= function($val) use(&$operations) { $operations[]= 'Wrote '.$val; };
     $log= function($val) use(&$operations) { $operations[]= 'Logged '.$val; };
 
-    Consumer::of($write)->compose($log)->accept('Test');
+    Consumer::of($write)->butFirst($log)->accept('Test');
     $this->assertEquals(['Logged Test', 'Wrote Test'], $operations);
   }
 
   #[@test]
-  public function and_then() {
+  public function andThen() {
     $values= [];
     $add= function($val) use(&$values) { $values[]= $val; };
     $remove= function($val) use(&$values) { unset($values[array_search($val, $values)]); };
@@ -64,15 +64,15 @@ class ConsumerTest extends \unittest\TestCase {
   }
 
   #[@test]
-  public function compose_optimized_for_identity() {
+  public function butFirst_optimized_for_identity() {
     $fixture= function($val) { return 'test'; };
 
-    $closure= Consumer::void()->compose($fixture);
+    $closure= Consumer::void()->butFirst($fixture);
     $this->assertEquals($fixture, typeof($closure)->getField('closure')->setAccessible(true)->get($closure));
   }
 
   #[@test]
-  public function and_then_optimized_for_identity() {
+  public function andThen_optimized_for_identity() {
     $fixture= function($val) { return 'test'; };
 
     $closure= Consumer::void()->andThen($fixture);

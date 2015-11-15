@@ -24,7 +24,7 @@ $doubleIt= Closure::of(function($val) { return $val * 2; });
 
 $increment->apply(5);                      // = 5 + 1 = 6
 $increment->andThen($doubleIt)->apply(5);  // = (5 + 1) * 2 = 12
-$increment->compose($doubleIt)->apply(5);  // = (5 * 2) + 1 = 11
+$increment->butFirst($doubleIt)->apply(5); // = (5 * 2) + 1 = 11
 ```
 
 The `identity()` method returns a closure instance which will return its arguments' value. The following example shows how it is used as the initial value for a reduction on a sequence of filters: If filters is empty, the reduction will return the identity function, otherwise it will combine all given closures using `andThen()`.
@@ -89,7 +89,7 @@ $write= Consumer::of(function($val) use($file) { $file->write($val); });
 
 $dump->accept(true);                       // Prints "bool(true)"
 $dump->andThen($write)->accept(true);      // Prints, then writes to file
-$write->compose($dump)->accept(true);      // (same as above)
+$write->butFirst($dump)->accept(true);     // (same as above)
 ```
 
 The `void()` method returns a consumer which does nothing.
