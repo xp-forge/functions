@@ -100,7 +100,7 @@ use lang\functions\Consumer;
 class Resource {
   private $conn;
 
-  public function __construct() { $this->conn= ...; }
+  private function __construct() { $this->conn= ...; }
 
   public function operation() { ... }
 
