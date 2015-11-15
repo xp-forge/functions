@@ -124,7 +124,7 @@ class Resource {
   }
 }
 
-Resource::use(Consumer::of(function($resource) {
+Resource::use(Consumer::of(function(Resource $resource) {
   $this->cat->info('Performing operation...')
   $resource->operation();
 }));
