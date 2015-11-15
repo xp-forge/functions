@@ -8,7 +8,6 @@ class PredicateTest extends \unittest\TestCase {
 
   #[@test, @values([
   #  [function($arg) { return true; }],
-  #  [function(...$args) { return empty($args); }],
   #  ['extension_loaded']
   #])]
   public function of($arg) {

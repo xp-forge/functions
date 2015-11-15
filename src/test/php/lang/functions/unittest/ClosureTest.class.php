@@ -18,7 +18,6 @@ class ClosureTest extends \unittest\TestCase {
 
   #[@test, @values([
   #  [function($arg) { return $arg; }],
-  #  [function(...$args) { return $args[0]; }],
   #  ['strlen'],
   #  ['lang.functions.Closure::of'],
   #  [[Closure::class, 'of']],
