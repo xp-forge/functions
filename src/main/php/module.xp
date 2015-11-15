@@ -1,0 +1,82 @@
+<?php namespace lang\functions;
+
+use lang\ClassLoader;
+
+module xp-forge/functions {
+  const LOGICAL_OPS = '{
+    /**
+     * Negates this predicate
+     *
+     * @return self
+     */
+    public function negate() {
+      return new self(function($arg) {
+        return !$this->predicate->__invoke($arg);
+      });
+    }
+
+    /**
+     * Compose this predicate with another predicate, using logical and (`&&`)
+     * semantics.
+     *
+     * @param  var $predicate A predicate reference
+     * @return self
+     */
+    public function %s($predicate) {
+      $func= self::$TYPE->cast($predicate);
+      return new self(function($arg) use($func) {
+        return $this->predicate->__invoke($arg) && $func->__invoke($arg);
+      });
+    }
+
+    /**
+     * Compose this predicate with another predicate, using logical or (`||`)
+     * semantics.
+     *
+     * @param  var $predicate A predicate reference
+     * @return self
+     */
+    public function %s($predicate) {
+      $func= self::$TYPE->cast($predicate);
+      return new self(function($arg) use($func) {
+        return $this->predicate->__invoke($arg) || $func->__invoke($arg);
+      });
+    }
+
+    %s
+  }';
+
+  /** @return void */
+  public function initialize() {
+
+    // Before PHP7, 'and' and 'or' were not allowed as function names,
+    // but could be syntactically used in method calls, e.g. $p->and().
+    // Generate a simple forwarding proxy to handle this situation.
+    //
+    // In PHP7, remove this indirection to increase performance.
+    if (PHP_VERSION <= '7.0.0') {
+      $declaration= sprintf(self::LOGICAL_OPS, '_and', '_or', '
+        /**
+         * Invocation overloading
+         *
+         * @param  string $name
+         * @param  var[] $args
+         * @return var
+         */
+        public function __call($name, $args) {
+          if ("and" === $name) {
+            return $this->_and($args[0]);
+          } else if ("or" === $name) {
+            return $this->_or($args[0]);
+          } else {
+            throw new \\lang\\Error("Call to undefined method ".nameof($this)."::".$name."()");
+          }
+        }
+      ');
+    } else {
+      $declaration= sprintf(self::LOGICAL_OPS, 'and', 'or', '');
+    }
+
+    ClassLoader::defineType(LogicalOps::class, ['kind' => 'trait', 'extends' => [], 'implements' => [], 'use' => []], $declaration);
+  }
+}
