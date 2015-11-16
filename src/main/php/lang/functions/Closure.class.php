@@ -64,7 +64,7 @@ class Closure {
    * Compose this closure with another closure which gets applied **before**
    * this closure gets applied.
    *
-   * @param  var $closure A closure reference
+   * @param  function(var): var $closure A closure reference
    * @return self
    */
   public function butFirst($closure) {
@@ -82,7 +82,7 @@ class Closure {
    * Compose this closure with another closure which gets applied **after**
    * this closure gets applied.
    *
-   * @param  var $closure A closure reference
+   * @param  function(var): var $closure A closure reference
    * @return self
    */
   public function andThen($closure) {
@@ -99,7 +99,7 @@ class Closure {
   /**
    * Wraps this closure with another closure (think: AroundInvoke)
    *
-   * @param  var $closure
+   * @param  function(php.Closure, var): var $closure
    * @return self
    */
   public function wrapIn($closure) {
