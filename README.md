@@ -9,7 +9,13 @@ Functional interfaces
 [![Supports HHVM 3.4+](https://raw.githubusercontent.com/xp-framework/web/master/static/hhvm-3_4plus.png)](http://hhvm.com/)
 [![Latest Stable Version](https://poser.pugx.org/xp-forge/functions/version.png)](https://packagist.org/packages/xp-forge/functions)
 
-Utilities for functional programming.
+Utilities for functional programming:
+
+* **[Closure](#closure)** - Represents a function which takes in an argument and returns a result.
+* **[Predicate](#predicate)** - Represents a function which takes in an argument and returns a boolean.
+* **[Consumer](#consumer)** - Represents a function which takes in an argument and does not return anything.
+* **[Errors](#errors)** - Provides a factory for handling, rethrowing and suppressing errors
+* **[Map lookup](#map-lookup)** - Provides a factory for creating closures for map lookups:
 
 Examples
 --------
@@ -58,26 +64,6 @@ class Camera {
 $input= new Color(125, 125, 125);
 (new Camera())->snap($input);                            // 125, 125, 125
 (new Camera([Color::class, 'brighter']))->snap($input);  // 178, 178, 178
-```
-
-### Errors
-For handling errors, closure calls can be wrapped in methods. The `lang.functions.Errors` factory provides three built-in error handling ways:
-
-* **Handle via function**: Supply a closure which receives the exception and can decide to either return a value (e.g. a default), to log and/or rethrow.
-* **Rethrow**: Supply a closure to wrap exceptions in other exceptions.
-* **Suppress**: Catch exceptions and return *null*.
-
-```php
-use lang\functions\Closure;
-use lang\functions\Errors;
-use lang\Throwable;
-
-$log= function(Throwable $e) {
-  $this->cat->error('Operation failed', $e);
-  throw $e;
-};
-
-Closure::of($operation)->wrapIn(Errors::handle($log))->apply($param);
 ```
 
 ### Predicate
@@ -147,6 +133,26 @@ Resource::use(Consumer::of(function(Resource $resource) {
   $this->cat->info('Performing operation...')
   $resource->operation();
 }));
+```
+
+### Errors
+For handling errors, closure calls can be wrapped in methods. The `lang.functions.Errors` factory provides three built-in error handling ways:
+
+* **Handle via function**: Supply a closure which receives the exception and can decide to either return a value (e.g. a default), to log and/or rethrow.
+* **Rethrow**: Supply a closure to wrap exceptions in other exceptions.
+* **Suppress**: Catch exceptions and return *null*.
+
+```php
+use lang\functions\Closure;
+use lang\functions\Errors;
+use lang\Throwable;
+
+$log= function(Throwable $e) {
+  $this->cat->error('Operation failed', $e);
+  throw $e;
+};
+
+Closure::of($operation)->wrapIn(Errors::handle($log))->apply($param);
 ```
 
 ### Map lookup
