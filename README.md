@@ -56,7 +56,7 @@ class Camera {
     );
   }
 
-  public function snap(Color $input) {
+  public function snap(Color $input): Color {
     return $this->filter->apply($input);
   }
 }
