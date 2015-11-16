@@ -149,6 +149,23 @@ Resource::use(Consumer::of(function(Resource $resource) {
 }));
 ```
 
+### Map lookup
+The `lang.functions.Closures` class provides a factory for creating closures for map lookups:
+
+```php
+use lang\functions\Closures;
+
+$map= ['key' => 'value'];
+
+$get= Closures::forMap($map);
+$get->apply('key');         // value
+$get->apply('color');       // ***lang.ElementNotFoundException
+
+$find= Closures::forMap($map, null);
+$find->apply('key');        // value
+$find->apply('color');      // null
+```
+
 Further reading
 ---------------
 * The [java.util.function package](http://docs.oracle.com/javase/8/docs/api/java/util/function/package-summary.html)
