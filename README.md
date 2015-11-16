@@ -153,3 +153,4 @@ Further reading
 ---------------
 * The [java.util.function package](http://docs.oracle.com/javase/8/docs/api/java/util/function/package-summary.html)
 * [Design Patterns in the Light of Lambda Expressions](https://www.youtube.com/watch?v=e4MT_OguDKg) - by Subramaniam at Devoxx 2015
+* [Durian: Guava's spikier (unofficial) cousin](https://github.com/diffplug/durian) - Further inspiration
