@@ -11,9 +11,9 @@ Functional interfaces
 
 Utilities for functional programming:
 
-* **[Closure](#closure)** - Represents a function which takes in an argument and returns a result.
-* **[Predicate](#predicate)** - Represents a function which takes in an argument and returns a boolean.
-* **[Consumer](#consumer)** - Represents a function which takes in an argument and does not return anything.
+* **[Closures](#closure)** - Represents a function which takes in an argument and returns a result.
+* **[Predicates](#predicate)** - Represents a function which takes in an argument and returns a boolean.
+* **[Consumers](#consumer)** - Represents a function which takes in an argument and does not return anything.
 * **[Errors](#errors)** - Provides a factory for handling, rethrowing and suppressing errors
 * **[Map lookup](#map-lookup)** - Provides a factory for creating closures for map lookups:
 
