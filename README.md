@@ -60,6 +60,25 @@ $input= new Color(125, 125, 125);
 (new Camera([Color::class, 'brighter']))->snap($input);  // 178, 178, 178
 ```
 
+### Errors
+For handling errors, closure calls can be wrapped in methods. The `lang.functions.Errors` factory provides three built-in error handling ways:
+
+* **Handle via function**: Supply a closure which receives the exception and can decide to either return a value (e.g. a default), to log and/or rethrow.
+* **Rethrow**: Supply a closure to wrap exceptions in other exceptions.
+* **Suppress**: Catch exceptions and return *null*.
+
+```php
+use lang\functions\Closure;
+use lang\functions\Errors;
+use lang\Throwable;
+
+$log= function(Throwable $e) {
+  $this->cat->error('Operation failed', $e);
+  throw $e;
+};
+
+Closure::of($operation)->wrapIn(Errors::handle($log))->apply($param);
+```
 
 ### Predicate
 Instances of the `lang.functions.Predicate` class represent a function which takes in an argument and returns a boolean.
