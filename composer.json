@@ -6,11 +6,11 @@
   "description" : "Functional interfaces",
   "keywords": ["module", "xp"],
   "require" : {
-    "xp-framework/core": "dev-master as 6.6.0-dev",
+    "xp-framework/core": "^7.0 | ^6.11",
     "php" : ">=5.5.0"
   },
   "require-dev" : {
-    "xp-framework/unittest": "^6.5.0"
+    "xp-framework/unittest": "^7.0 | ^6.5"
   },
   "autoload" : {
     "files" : ["src/main/php/autoload.php"]
