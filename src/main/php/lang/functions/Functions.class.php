@@ -1,13 +1,13 @@
 <?php namespace lang\functions;
 
 use lang\FunctionType;
-use lang\Type;
 use lang\Primitive;
+use lang\Type;
 
 /**
  * Function types used throughout the library
  */
-abstract class Functions extends \lang\Object {
+abstract class Functions {
   public static $WRAP, $APPLY, $CONSUME, $PREDICATE;
 
   static function __static() {

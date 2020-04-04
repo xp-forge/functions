@@ -25,7 +25,7 @@ class Closure {
    * Returns a new closure instance
    *
    * @param  var $closure A closure reference
-   * @return self
+   * @return lang.functions.Closure
    */
   public static function of($closure) {
     return new self(Functions::$APPLY->cast($closure));
