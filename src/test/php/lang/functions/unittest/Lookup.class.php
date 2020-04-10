@@ -13,7 +13,7 @@ class Lookup implements \ArrayAccess {
   }
 
   public function offsetGet($key) {
-    return isset($this->map[$key]) ? $this->map[$key] : null;
+    return $this->map[$key] ?? null;
   }
 
   public function offsetSet($key, $value) {
