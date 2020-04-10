@@ -1,7 +1,6 @@
 <?php namespace lang\functions;
 
-use lang\FunctionType;
-use lang\Error;
+use lang\{Error, FunctionType};
 
 /**
  * Wraps a PHP closure which represents a function that accepts one argument

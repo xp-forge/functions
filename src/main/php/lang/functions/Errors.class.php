@@ -1,7 +1,6 @@
 <?php namespace lang\functions;
 
-use lang\Throwable;
-use lang\Error;
+use lang\{Error, Throwable};
 
 /**
  * Factory for error handlers to be used in conjunction with `Closure::wrapIn()`.

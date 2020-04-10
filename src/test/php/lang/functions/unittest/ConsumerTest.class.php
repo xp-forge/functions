@@ -1,8 +1,7 @@
 <?php namespace lang\functions\unittest;
 
+use lang\{ClassCastException, IllegalStateException};
 use lang\functions\Consumer;
-use lang\ClassCastException;
-use lang\IllegalStateException;
 
 class ConsumerTest extends \unittest\TestCase {
 

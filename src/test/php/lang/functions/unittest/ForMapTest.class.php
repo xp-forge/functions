@@ -1,9 +1,7 @@
 <?php namespace lang\functions\unittest;
 
-use lang\functions\Closures;
-use lang\functions\Closure;
-use lang\IllegalArgumentException;
-use lang\ElementNotFoundException;
+use lang\{ElementNotFoundException, IllegalArgumentException};
+use lang\functions\{Closure, Closures};
 
 class ForMapTest extends \unittest\TestCase {
 

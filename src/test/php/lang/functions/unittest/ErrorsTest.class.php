@@ -1,9 +1,7 @@
 <?php namespace lang\functions\unittest;
 
-use lang\functions\Closure;
-use lang\functions\Errors;
-use lang\IllegalStateException;
-use lang\MethodNotImplementedException;
+use lang\{IllegalStateException, MethodNotImplementedException};
+use lang\functions\{Closure, Errors};
 
 class ErrorsTest extends \unittest\TestCase {
 

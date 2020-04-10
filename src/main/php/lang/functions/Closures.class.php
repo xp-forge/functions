@@ -1,7 +1,6 @@
 <?php namespace lang\functions;
 
-use lang\IllegalArgumentException;
-use lang\ElementNotFoundException ;
+use lang\{ElementNotFoundException, IllegalArgumentException};
 
 abstract class Closures {
 

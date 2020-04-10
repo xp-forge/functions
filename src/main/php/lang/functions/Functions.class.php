@@ -1,8 +1,6 @@
 <?php namespace lang\functions;
 
-use lang\FunctionType;
-use lang\Primitive;
-use lang\Type;
+use lang\{FunctionType, Primitive, Type};
 
 /**
  * Function types used throughout the library

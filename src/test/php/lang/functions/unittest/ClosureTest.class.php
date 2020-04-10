@@ -1,7 +1,7 @@
 <?php namespace lang\functions\unittest;
 
-use lang\functions\Closure;
 use lang\ClassCastException;
+use lang\functions\Closure;
 
 class ClosureTest extends \unittest\TestCase {
 

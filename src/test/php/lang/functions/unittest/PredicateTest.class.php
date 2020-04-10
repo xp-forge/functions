@@ -1,8 +1,7 @@
 <?php namespace lang\functions\unittest;
 
+use lang\{ClassCastException, IllegalStateException};
 use lang\functions\Predicate;
-use lang\ClassCastException;
-use lang\IllegalStateException;
 
 class PredicateTest extends \unittest\TestCase {
 
