@@ -2,16 +2,23 @@
 
 use lang\functions\Predicate;
 use lang\{ClassCastException, IllegalStateException};
-use unittest\{Expect, Test, Values};
+use unittest\{Expect, Test, Values, TestCase};
 
-class PredicateTest extends \unittest\TestCase {
+class PredicateTest extends TestCase {
 
-  #[Test, Values([[function($arg) { return true; }], ['extension_loaded']])]
+  /** @return iterable */
+  private function invalid() {
+    yield [function() { }];
+    yield ['non_existant'];
+    yield ['lang.functions.NonExistant::apply'];
+  }
+
+  #[Test, Values(eval: '[[function($arg) { return true; }], ["extension_loaded"]]')]
   public function of($arg) {
     $this->assertInstanceOf(Predicate::class, Predicate::of($arg));
   }
 
-  #[Test, Expect(ClassCastException::class), Values([[function() { }], ['non_existant'], ['lang.functions.NonExistant::apply']])]
+  #[Test, Expect(ClassCastException::class), Values('invalid')]
   public function of_does_not_accept_invalid_references($arg) {
     Predicate::of($arg);
   }

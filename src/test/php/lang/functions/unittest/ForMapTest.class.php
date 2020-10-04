@@ -2,9 +2,9 @@
 
 use lang\functions\{Closure, Closures};
 use lang\{ElementNotFoundException, IllegalArgumentException};
-use unittest\{Expect, Test, Values};
+use unittest\{Expect, Test, Values, TestCase};
 
-class ForMapTest extends \unittest\TestCase {
+class ForMapTest extends TestCase {
 
   /** @return var[][] */
   private function maps() {
@@ -14,7 +14,12 @@ class ForMapTest extends \unittest\TestCase {
     ];
   }
 
-  #[Test, Values([[[]], [['key' => 'value']], [new Lookup()]])]
+  #[Test]
+  public function forMap_with_empty() {
+    $this->assertInstanceOf(Closure::class, Closures::forMap([]));
+  }
+
+  #[Test, Values('maps')]
   public function forMap($arg) {
     $this->assertInstanceOf(Closure::class, Closures::forMap($arg));
   }
@@ -44,7 +49,7 @@ class ForMapTest extends \unittest\TestCase {
     $this->assertEquals(null, Closures::forMap($arg, null)->apply('non_existant'));
   }
 
-  #[Test, Values([[['key' => null]], [new Lookup(['key' => null])]])]
+  #[Test, Values(eval: '[[["key" => null]], [new Lookup(["key" => null])]]')]
   public function does_not_throw_exceptions_for_null($arg) {
     $this->assertEquals(null, Closures::forMap($arg)->apply('key'));
   }

@@ -2,9 +2,30 @@
 
 use lang\ClassCastException;
 use lang\functions\Closure;
-use unittest\{Expect, Test, Values};
+use unittest\{Expect, Test, Values, TestCase};
 
-class ClosureTest extends \unittest\TestCase {
+class ClosureTest extends TestCase {
+
+  /** @return iterable */
+  private function closures() {
+    yield [function($arg) { return $arg; }];
+    yield ['strlen'];
+    yield ['lang.functions.Closure::of'];
+    yield [[Closure::class, 'of']];
+    yield [[ConcatenationOf::class, 'new']];
+    yield [[new ConcatenationOf('test'), 'apply']];
+  }
+
+  /** @return iterable */
+  private function invalid() {
+    yield [function() { }];
+    yield ['non_existant'];
+    yield ['lang.functions.NonExistant::apply'];
+    yield ['lang.functions.Closure::non_existant'];
+    yield [[Closure::class, 'non_existant']];
+    yield [[ConcatenationOf::class, 'non_existant']];
+    yield [[new ConcatenationOf('test'), 'non_existant']];
+  }
 
   #[Test]
   public function identity() {
@@ -17,12 +38,12 @@ class ClosureTest extends \unittest\TestCase {
     $this->assertEquals(5, $f(5));
   }
 
-  #[Test, Values([[function($arg) { return $arg; }], ['strlen'], ['lang.functions.Closure::of'], [[Closure::class, 'of']], [[ConcatenationOf::class, 'new']], [[new ConcatenationOf('test'), 'apply']]])]
+  #[Test, Values('closures')]
   public function of($arg) {
     $this->assertInstanceOf(Closure::class, Closure::of($arg));
   }
 
-  #[Test, Expect(ClassCastException::class), Values([[function() { }], ['non_existant'], ['lang.functions.NonExistant::apply'], ['lang.functions.Closure::non_existant'], [[Closure::class, 'non_existant']], [[ConcatenationOf::class, 'non_existant']], [[new ConcatenationOf('test'), 'non_existant']]])]
+  #[Test, Expect(ClassCastException::class), Values('invalid')]
   public function of_does_not_accept_invalid_references($arg) {
     Closure::of($arg);
   }

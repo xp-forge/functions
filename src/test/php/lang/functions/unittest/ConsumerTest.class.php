@@ -2,9 +2,16 @@
 
 use lang\functions\Consumer;
 use lang\{ClassCastException, IllegalStateException};
-use unittest\{Expect, Test, Values};
+use unittest\{Expect, Test, Values, TestCase};
 
-class ConsumerTest extends \unittest\TestCase {
+class ConsumerTest extends TestCase {
+
+  /** @return iterable */
+  private function invalid() {
+    yield [function() { }];
+    yield ['non_existant'];
+    yield ['lang.functions.NonExistant::apply'];
+  }
 
   #[Test]
   public function void() {
@@ -17,12 +24,12 @@ class ConsumerTest extends \unittest\TestCase {
     $f(5);
   }
 
-  #[Test, Values([[function($arg) { return true; }], ['extension_loaded']])]
+  #[Test, Values(eval: '[[function($arg) { return true; }], ["extension_loaded"]]')]
   public function of($arg) {
     $this->assertInstanceOf(Consumer::class, Consumer::of($arg));
   }
 
-  #[Test, Expect(ClassCastException::class), Values([[function() { }], ['non_existant'], ['lang.functions.NonExistant::apply']])]
+  #[Test, Expect(ClassCastException::class), Values('invalid')]
   public function of_does_not_accept_invalid_references($arg) {
     Consumer::of($arg);
   }
