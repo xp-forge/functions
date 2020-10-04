@@ -1,39 +1,33 @@
 <?php namespace lang\functions\unittest;
 
-use lang\{ClassCastException, IllegalStateException};
 use lang\functions\Consumer;
+use lang\{ClassCastException, IllegalStateException};
+use unittest\{Expect, Test, Values};
 
 class ConsumerTest extends \unittest\TestCase {
 
-  #[@test]
+  #[Test]
   public function void() {
     Consumer::void()->accept(5);
   }
 
-  #[@test]
+  #[Test]
   public function is_callable() {
     $f= Consumer::void();
     $f(5);
   }
 
-  #[@test, @values([
-  #  [function($arg) { return true; }],
-  #  ['extension_loaded']
-  #])]
+  #[Test, Values([[function($arg) { return true; }], ['extension_loaded']])]
   public function of($arg) {
     $this->assertInstanceOf(Consumer::class, Consumer::of($arg));
   }
 
-  #[@test, @expect(ClassCastException::class), @values([
-  #  [function() { }],
-  #  ['non_existant'],
-  #  ['lang.functions.NonExistant::apply']
-  #])]
+  #[Test, Expect(ClassCastException::class), Values([[function() { }], ['non_existant'], ['lang.functions.NonExistant::apply']])]
   public function of_does_not_accept_invalid_references($arg) {
     Consumer::of($arg);
   }
 
-  #[@test]
+  #[Test]
   public function accept() {
     $values= [];
     $add= function($val) use(&$values) { $values[]= $val; };
@@ -42,7 +36,7 @@ class ConsumerTest extends \unittest\TestCase {
     $this->assertEquals([1], $values);
   }
 
-  #[@test]
+  #[Test]
   public function butFirst() {
     $operations= [];
     $write= function($val) use(&$operations) { $operations[]= 'Wrote '.$val; };
@@ -52,7 +46,7 @@ class ConsumerTest extends \unittest\TestCase {
     $this->assertEquals(['Logged Test', 'Wrote Test'], $operations);
   }
 
-  #[@test]
+  #[Test]
   public function andThen() {
     $values= [];
     $add= function($val) use(&$values) { $values[]= $val; };
@@ -62,7 +56,7 @@ class ConsumerTest extends \unittest\TestCase {
     $this->assertEquals([], $values);
   }
 
-  #[@test]
+  #[Test]
   public function butFirst_optimized_for_identity() {
     $fixture= function($val) { return 'test'; };
 
@@ -70,7 +64,7 @@ class ConsumerTest extends \unittest\TestCase {
     $this->assertEquals($fixture, typeof($closure)->getField('closure')->setAccessible(true)->get($closure));
   }
 
-  #[@test]
+  #[Test]
   public function andThen_optimized_for_identity() {
     $fixture= function($val) { return 'test'; };
 

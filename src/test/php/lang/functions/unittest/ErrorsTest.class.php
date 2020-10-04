@@ -1,11 +1,12 @@
 <?php namespace lang\functions\unittest;
 
-use lang\{IllegalStateException, MethodNotImplementedException};
 use lang\functions\{Closure, Errors};
+use lang\{IllegalStateException, MethodNotImplementedException};
+use unittest\{Expect, Test};
 
 class ErrorsTest extends \unittest\TestCase {
 
-  #[@test]
+  #[Test]
   public function suppress_exceptions() {
     $fixture= function($val) { throw new IllegalStateException('Test'); };
 
@@ -13,7 +14,7 @@ class ErrorsTest extends \unittest\TestCase {
     $this->assertNull($closure(null));
   }
 
-  #[@test]
+  #[Test]
   public function handke_exceptions() {
     $fixture= function($val) { throw new IllegalStateException('Test'); };
 
@@ -21,7 +22,7 @@ class ErrorsTest extends \unittest\TestCase {
     $this->assertFalse($closure(null));
   }
 
-  #[@test, @expect(IllegalStateException::class)]
+  #[Test, Expect(IllegalStateException::class)]
   public function rethrow_exceptions() {
     $fixture= function($val) { throw new MethodNotImplementedException('Test', __FUNCTION__); };
     $as= function($e) { return new IllegalStateException('Should not occur', $e); };

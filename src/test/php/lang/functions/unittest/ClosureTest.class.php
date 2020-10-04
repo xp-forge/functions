@@ -2,53 +2,39 @@
 
 use lang\ClassCastException;
 use lang\functions\Closure;
+use unittest\{Expect, Test, Values};
 
 class ClosureTest extends \unittest\TestCase {
 
-  #[@test]
+  #[Test]
   public function identity() {
     $this->assertEquals(5, Closure::identity()->apply(5));
   }
 
-  #[@test]
+  #[Test]
   public function is_callable() {
     $f= Closure::identity();
     $this->assertEquals(5, $f(5));
   }
 
-  #[@test, @values([
-  #  [function($arg) { return $arg; }],
-  #  ['strlen'],
-  #  ['lang.functions.Closure::of'],
-  #  [[Closure::class, 'of']],
-  #  [[ConcatenationOf::class, 'new']],
-  #  [[new ConcatenationOf('test'), 'apply']]
-  #])]
+  #[Test, Values([[function($arg) { return $arg; }], ['strlen'], ['lang.functions.Closure::of'], [[Closure::class, 'of']], [[ConcatenationOf::class, 'new']], [[new ConcatenationOf('test'), 'apply']]])]
   public function of($arg) {
     $this->assertInstanceOf(Closure::class, Closure::of($arg));
   }
 
-  #[@test, @expect(ClassCastException::class), @values([
-  #  [function() { }],
-  #  ['non_existant'],
-  #  ['lang.functions.NonExistant::apply'],
-  #  ['lang.functions.Closure::non_existant'],
-  #  [[Closure::class, 'non_existant']],
-  #  [[ConcatenationOf::class, 'non_existant']],
-  #  [[new ConcatenationOf('test'), 'non_existant']]
-  #])]
+  #[Test, Expect(ClassCastException::class), Values([[function() { }], ['non_existant'], ['lang.functions.NonExistant::apply'], ['lang.functions.Closure::non_existant'], [[Closure::class, 'non_existant']], [[ConcatenationOf::class, 'non_existant']], [[new ConcatenationOf('test'), 'non_existant']]])]
   public function of_does_not_accept_invalid_references($arg) {
     Closure::of($arg);
   }
 
-  #[@test]
+  #[Test]
   public function apply() {
     $increment= function($val) { return $val + 1; };
 
     $this->assertEquals(6, Closure::of($increment)->apply(5));
   }
 
-  #[@test]
+  #[Test]
   public function butFirst() {
     $increment= function($val) { return $val + 1; };
     $doubleIt= function($val) { return $val * 2; };
@@ -56,7 +42,7 @@ class ClosureTest extends \unittest\TestCase {
     $this->assertEquals(11, Closure::of($increment)->butFirst($doubleIt)->apply(5));
   }
 
-  #[@test]
+  #[Test]
   public function andThen() {
     $increment= function($val) { return $val + 1; };
     $doubleIt= function($val) { return $val * 2; };
@@ -64,7 +50,7 @@ class ClosureTest extends \unittest\TestCase {
     $this->assertEquals(12, Closure::of($increment)->andThen($doubleIt)->apply(5));
   }
 
-  #[@test]
+  #[Test]
   public function apply_instance() {
     $inCurly= new EnclosedIn('{', '}');
     $inSquare= new EnclosedIn('[', ']');
@@ -72,7 +58,7 @@ class ClosureTest extends \unittest\TestCase {
     $this->assertEquals('[{Test}]', Closure::of([$inCurly, 'layout'])->andThen([$inSquare, 'layout'])->apply('Test'));
   }
 
-  #[@test]
+  #[Test]
   public function butFirst_optimized_for_identity() {
     $fixture= function($val) { return 'test'; };
 
@@ -80,7 +66,7 @@ class ClosureTest extends \unittest\TestCase {
     $this->assertEquals($fixture, typeof($closure)->getField('closure')->setAccessible(true)->get($closure));
   }
 
-  #[@test]
+  #[Test]
   public function andThen_optimized_for_identity() {
     $fixture= function($val) { return 'test'; };
 
